@@ -1,0 +1,21 @@
+name: Lambda deploy
+
+on:
+  push:
+    paths:
+      - '**.py'
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+env:
+  HELLO_WORLD: "hello-world"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v1
+      - name: ./hello-world.py
