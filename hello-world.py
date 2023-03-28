@@ -2,6 +2,6 @@
 
 
 def test_func():
-    print("Hello world")
+    print("Hello world from lambda and Github")
 
 test_func()
