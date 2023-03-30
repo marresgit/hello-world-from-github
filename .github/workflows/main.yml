@@ -35,4 +35,36 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Lint with flake8 # python lint
+      # stop the build if there are Python syntax errors or undefined names
+      flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+      flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+# -- Use node and NPM  to install serverless-python-requirements --
+    - name: Use Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.NODE_VERSION }}
 
+    - name: Cache node modules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        # npm cache files are stored in ~/.npm on linux
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.js }}
+        restore-keys: | 
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+    - name: Install Node dependencies (specifically, serverless-python-requirements)
+      run: npm install
+
+    #i have no idea what this is used for. but its serverless deploy of some sort
+    - name: Serverless Deploy
+      uses: dhollerbach/github-action-serverless-with-python-requirements@master
+      env:
+        # AWS credentials directly
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
