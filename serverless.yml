@@ -6,22 +6,22 @@ provider:
   stage: dev
   region: us-east-1
 
-  plugins:
-    - serverless-python-requirements
+plugins:
+  - serverless-python-requirements
 
-  package:
-    individually: true # means: we include more files that we choose
+package:
+  individually: true
 
-  functions:
-    theLambda:
-      name: test-lambda
-      handlar: lambda.handler
-      description: test-lambda
-      timeout: 5 # seconds
-      memorySize: 128 # mb
-      package:
-        patterns: #these files are not relevant to our lambda function. decrese, deployment time
-          - "!node_modules/**"
-          - "!yarn.lock"
-          - "!package-lock.json"
-          - "!package.json"
+functions:
+  theLambda:
+    name: test-lambda
+    handler: lambda.handler
+    description: test-lambda
+    timeout: 5 # seconds
+    memorySize: 128 # mb
+    package:
+      patterns:
+        - "!node_modules/**"
+        - "!yarn.lock"
+        - "!package-lock.json"
+        - "!package.json"
