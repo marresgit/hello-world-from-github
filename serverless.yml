@@ -15,7 +15,7 @@ package:
 functions:
   theLambda:
     name: test-lambda
-    handler: hello.world.lambda.handler
+    handler: lambda.handler
     description: test-lambda
     timeout: 5 # seconds
     memorySize: 128 # mb
